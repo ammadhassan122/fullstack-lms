@@ -50,7 +50,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
       {/* Main Content */}
       <main className="relative z-10 px-6 lg:px-12 py-8 max-w-7xl mx-auto">
-        <LessonPageContent lesson={lesson} userId={userId} />
+        <LessonPageContent lesson={lesson as any} userId={userId} />
       </main>
     </div>
   );
