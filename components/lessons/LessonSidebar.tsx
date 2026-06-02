@@ -9,10 +9,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import type { LESSON_BY_ID_QUERYResult } from "@/sanity.types";
+import type { LESSON_BY_ID_QUERY_RESULT } from "@/sanity.types";
 
 // Infer types from Sanity query result
-type Course = NonNullable<LESSON_BY_ID_QUERYResult>["courses"][number];
+type Course = NonNullable<LESSON_BY_ID_QUERY_RESULT>["courses"][number];
 type CourseModules = Course["modules"];
 type Module = NonNullable<CourseModules>[number];
 type Lesson = NonNullable<Module["lessons"]>[number];
@@ -38,7 +38,7 @@ export function LessonSidebar({
 
   // Find which module contains the current lesson
   const currentModuleId = modules.find((m) =>
-    m.lessons?.some((l) => l._id === currentLessonId),
+    m.lessons?.some((l: any) => l._id === currentLessonId),
   )?._id;
 
   return (
@@ -67,7 +67,7 @@ export function LessonSidebar({
             {modules.map((module, moduleIndex) => {
               const lessonCount = module.lessons?.length ?? 0;
               const completedCount =
-                module.lessons?.filter((l) =>
+                module.lessons?.filter((l: any) =>
                   completedLessonIds.includes(l._id),
                 ).length ?? 0;
 
@@ -100,7 +100,7 @@ export function LessonSidebar({
 
                   <AccordionContent className="pb-3 pt-1">
                     <div className="ml-4 border-l-2 border-zinc-800 pl-3 space-y-1">
-                      {module.lessons?.map((lesson, lessonIndex) => {
+                      {module.lessons?.map((lesson: any, lessonIndex: any) => {
                         const isActive = lesson._id === currentLessonId;
                         const isCompleted = completedLessonIds.includes(
                           lesson._id,

@@ -44,7 +44,7 @@ interface ToolbarProps {
 }
 
 // Extend style schema with icons
-const extendStyle: ExtendStyleSchemaType = (style) => {
+const extendStyle: ExtendStyleSchemaType = (style: any) => {
   const icons: Record<string, React.ComponentType<{ className?: string }>> = {
     normal: Type,
     h1: Heading1,
@@ -61,7 +61,7 @@ const extendStyle: ExtendStyleSchemaType = (style) => {
 };
 
 // Extend decorator schema with icons
-const extendDecorator: ExtendDecoratorSchemaType = (decorator) => {
+const extendDecorator: ExtendDecoratorSchemaType = (decorator: any) => {
   const icons: Record<string, React.ComponentType<{ className?: string }>> = {
     strong: Bold,
     em: Italic,
@@ -83,7 +83,7 @@ const extendDecorator: ExtendDecoratorSchemaType = (decorator) => {
 };
 
 // Extend list schema with icons
-const extendList: ExtendListSchemaType = (list) => {
+const extendList: ExtendListSchemaType = (list: any) => {
   const icons: Record<string, React.ComponentType<{ className?: string }>> = {
     bullet: List,
     number: ListOrdered,
@@ -170,7 +170,7 @@ function StyleSelector({
         <SelectValue placeholder="Style" />
       </SelectTrigger>
       <SelectContent className="bg-zinc-800 border-zinc-700">
-        {styles.map((style) => {
+        {styles.map((style: any) => {
           const Icon = style.icon as React.ComponentType<{
             className?: string;
           }>;
@@ -248,7 +248,7 @@ export function Toolbar({ onInsertImage }: ToolbarProps) {
       )}
 
       {/* Decorator buttons */}
-      {toolbarSchema.decorators?.map((decorator) => (
+      {toolbarSchema.decorators?.map((decorator: any) => (
         <DecoratorButton key={decorator.name} schemaType={decorator} />
       ))}
 
@@ -257,7 +257,7 @@ export function Toolbar({ onInsertImage }: ToolbarProps) {
       )}
 
       {/* List buttons */}
-      {toolbarSchema.lists?.map((list) => (
+      {toolbarSchema.lists?.map((list: any) => (
         <ListButton key={list.name} schemaType={list} />
       ))}
 

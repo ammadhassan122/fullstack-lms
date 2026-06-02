@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 import { CourseCard } from "./CourseCard";
 import { TierFilterTabs, type TierFilter } from "./TierFilterTabs";
 import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
-import type { DASHBOARD_COURSES_QUERYResult } from "@/sanity.types";
+import type { DASHBOARD_COURSES_QUERY_RESULT } from "@/sanity.types";
 
 // Infer course type from Sanity query result
-export type CourseListCourse = DASHBOARD_COURSES_QUERYResult[number];
+export type CourseListCourse = DASHBOARD_COURSES_QUERY_RESULT[number];
 
 interface CourseListProps {
   courses: CourseListCourse[];

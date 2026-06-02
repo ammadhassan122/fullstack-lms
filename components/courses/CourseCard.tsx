@@ -5,10 +5,10 @@ import Link from "next/link";
 import { BookOpen, Lock, Play, Layers, CheckCircle2 } from "lucide-react";
 import { TIER_STYLES } from "@/lib/constants";
 import { Progress } from "@/components/ui/progress";
-import type { DASHBOARD_COURSES_QUERYResult } from "@/sanity.types";
+import type { DASHBOARD_COURSES_QUERY_RESULT } from "@/sanity.types";
 
 // Infer Sanity course fields from query result
-type SanityCourse = DASHBOARD_COURSES_QUERYResult[number];
+type SanityCourse = DASHBOARD_COURSES_QUERY_RESULT[number];
 
 export interface CourseCardProps
   extends Pick<
@@ -43,7 +43,7 @@ export function CourseCard({
   showProgress = false,
 }: CourseCardProps) {
   const displayTier = tier ?? "free";
-  const styles = TIER_STYLES[displayTier];
+  const styles = TIER_STYLES[displayTier as keyof typeof TIER_STYLES];
   const totalLessons = lessonCount ?? 0;
   const completed = completedLessonCount ?? 0;
   const progressPercent =

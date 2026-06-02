@@ -137,7 +137,7 @@ export function ModuleAccordionItemContent({
 
       if (oldIndex !== -1 && newIndex !== -1) {
         const newLessons = arrayMove(lessons, oldIndex, newIndex);
-        editLessons(newLessons as SanityReference[]);
+        editLessons(newLessons as any);
       }
     }
   };
@@ -151,12 +151,12 @@ export function ModuleAccordionItemContent({
       _key: crypto.randomUUID(),
     };
 
-    editLessons([...lessons, newLesson] as SanityReference[]);
+    editLessons([...lessons, newLesson] as any);
     setSelectedLessonToAdd("");
   };
 
   const handleRemoveLesson = (lessonRef: string) => {
-    editLessons(lessons.filter((l) => l._ref !== lessonRef) as SanityReference[]);
+    editLessons(lessons.filter((l) => l._ref !== lessonRef) as any);
   };
 
   const lessonSortableIds = lessons.map((l) => l._key ?? l._ref);

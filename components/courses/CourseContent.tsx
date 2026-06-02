@@ -6,11 +6,11 @@ import { ModuleAccordion } from "./ModuleAccordion";
 import { CourseCompleteButton } from "./CourseCompleteButton";
 import { GatedFallback } from "./GatedFallback";
 import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
-import type { COURSE_WITH_MODULES_QUERYResult } from "@/sanity.types";
+import type { COURSE_WITH_MODULES_QUERY_RESULT } from "@/sanity.types";
 import { Skeleton } from "../ui/skeleton";
 
 interface CourseContentProps {
-  course: NonNullable<COURSE_WITH_MODULES_QUERYResult>;
+  course: NonNullable<COURSE_WITH_MODULES_QUERY_RESULT>;
   userId: string | null;
 }
 

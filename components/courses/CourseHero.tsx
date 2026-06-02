@@ -3,10 +3,10 @@ import Link from "next/link";
 import { ArrowLeft, BookOpen, Play, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TIER_STYLES } from "@/lib/constants";
-import type { COURSE_WITH_MODULES_QUERYResult } from "@/sanity.types";
+import type { COURSE_WITH_MODULES_QUERY_RESULT } from "@/sanity.types";
 
 // Infer props from Sanity query result
-type Course = NonNullable<COURSE_WITH_MODULES_QUERYResult>;
+type Course = NonNullable<COURSE_WITH_MODULES_QUERY_RESULT>;
 
 type CourseHeroProps = Pick<
   Course,
@@ -23,7 +23,7 @@ export function CourseHero({
   lessonCount,
 }: CourseHeroProps) {
   const displayTier = tier ?? "free";
-  const styles = TIER_STYLES[displayTier];
+  const styles = TIER_STYLES[displayTier as keyof typeof TIER_STYLES];
 
   return (
     <div className="mb-12">

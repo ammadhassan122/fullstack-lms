@@ -112,10 +112,10 @@ export const searchCoursesTool = tool({
       query: ALL_COURSES_WITH_CONTENT_QUERY,
     });
 
-    console.log("[SearchCourses] Courses fetched:", allCourses.length);
+    console.log("[SearchCourses] Courses fetched:", (allCourses as any).length);
     console.log(
       "[SearchCourses] Course titles:",
-      allCourses.map((c: Course) => c.title)
+      (allCourses as any).map((c: Course) => c.title)
     );
 
     // Split query into search terms

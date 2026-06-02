@@ -235,7 +235,7 @@ export async function getMuxSignedTokens(
     }
 
     // Use the already-initialized Mux client
-    const playbackToken = mux.jwt.signPlaybackId(playbackId, {
+    const playbackToken = await mux.jwt.signPlaybackId(playbackId, {
       keyId: signingKeyId,
       keySecret: decodedKey,
       type: "video",
@@ -244,7 +244,7 @@ export async function getMuxSignedTokens(
     console.log("DEBUG - Playback token generated successfully, length:", playbackToken.length);
 
     // Generate thumbnail token (same playback ID with different audience)
-    const thumbnailToken = mux.jwt.signPlaybackId(playbackId, {
+    const thumbnailToken = await mux.jwt.signPlaybackId(playbackId, {
       keyId: signingKeyId,
       keySecret: decodedKey,
       type: "thumbnail",
@@ -253,7 +253,7 @@ export async function getMuxSignedTokens(
     console.log("DEBUG - Thumbnail token generated successfully, length:", thumbnailToken.length);
 
     // Generate storyboard token (same playback ID with different audience)
-    const storyboardToken = mux.jwt.signPlaybackId(playbackId, {
+    const storyboardToken = await mux.jwt.signPlaybackId(playbackId, {
       keyId: signingKeyId,
       keySecret: decodedKey,
       type: "storyboard",
