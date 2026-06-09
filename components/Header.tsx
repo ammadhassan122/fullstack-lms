@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-//  Components ko alag import karein
-import { Show, SignInButton, UserButton, useAuth } from "@clerk/nextjs";
+import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,39 +11,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Code2,
+  GraduationCap,
   Play,
   LayoutDashboard,
   BookOpen,
-  Sparkles,
   Menu,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const loggedOutLinks = [
-  { href: "#courses", label: "Courses" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "#testimonials", label: "Reviews" },
+  { href: "#courses", label: "Our Classes" },
+  { href: "#testimonials", label: "Fun Reviews" },
 ];
 
 export function Header() {
   const pathname = usePathname();
-  const { has } = useAuth();
-
-  const isUltra = has?.({ plan: "ultra" });
 
   const loggedInLinks = [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/dashboard/courses", label: "My Courses", icon: BookOpen },
-    // Show "Account" for Ultra users, "Upgrade" for others
-    ...(isUltra
-      ? [{ href: "/pricing", label: "Account", icon: Sparkles }]
-      : [{ href: "/pricing", label: "Upgrade", icon: Sparkles }]),
+    { href: "/dashboard", label: "My Desk", icon: LayoutDashboard },
+    { href: "/dashboard/courses", label: "My Classes", icon: BookOpen },
   ];
 
   return (
     <nav className="relative z-10 flex items-center justify-between px-6 lg:px-12 py-5 max-w-7xl mx-auto">
-      {/* Logo - links to dashboard when logged in, home when logged out */}
       <div>
         <Show when="signed-in">
           <Link href="/dashboard" className="flex items-center gap-3 group">
@@ -58,15 +48,14 @@ export function Header() {
         </Show>
       </div>
 
-      {/* Center Navigation - absolute positioning for perfect center on desktop */}
       <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <Show when="signed-out">
-          <div className="flex items-center gap-8 text-sm text-zinc-400">
+          <div className="flex items-center gap-8 text-sm text-muted-foreground font-medium">
             {loggedOutLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="hover:text-white transition-colors duration-200"
+                className="hover:text-primary transition-colors duration-200"
               >
                 {link.label}
               </Link>
@@ -87,10 +76,10 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                    "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
                     isActive
-                      ? "bg-violet-500/10 text-violet-300"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-800/50",
+                      ? "bg-pastel-sky/80 text-sky-800 shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-pastel-mint/50",
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -102,30 +91,18 @@ export function Header() {
         </Show>
       </div>
 
-      {/* Right section */}
       <div className="flex items-center gap-3">
         <Show when="signed-out">
-          {/* Mobile: Dropdown menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="md:hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-zinc-400 hover:text-white hover:bg-zinc-800/50"
-              >
+              <Button variant="ghost" size="icon" className="text-muted-foreground">
                 <Menu className="w-5 h-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="bg-zinc-900 border-zinc-800"
-            >
+            <DropdownMenuContent align="end" className="bg-card border-border">
               {loggedOutLinks.map((link) => (
                 <DropdownMenuItem key={link.href} asChild>
-                  <Link
-                    href={link.href}
-                    className="text-zinc-300 cursor-pointer"
-                  >
+                  <Link href={link.href} className="cursor-pointer">
                     {link.label}
                   </Link>
                 </DropdownMenuItem>
@@ -134,36 +111,26 @@ export function Header() {
           </DropdownMenu>
 
           <SignInButton mode="modal">
-            <Button
-              variant="ghost"
-              className="text-zinc-400 hover:text-white hover:bg-white/5"
-            >
+            <Button variant="ghost" className="text-muted-foreground font-medium">
               Sign in
             </Button>
           </SignInButton>
-          <Link href="/pricing" className="hidden sm:block">
-            <Button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-lg shadow-violet-600/25">
+          <Link href="/dashboard" className="hidden sm:block">
+            <Button className="bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white border-0 shadow-md shadow-sky-300/40 rounded-xl font-semibold">
+              <Sparkles className="w-4 h-4 mr-2" />
               Start Learning
             </Button>
           </Link>
         </Show>
 
         <Show when="signed-in">
-          {/* Mobile: Dropdown menu next to user profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="md:hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-zinc-400 hover:text-white hover:bg-zinc-800/50"
-              >
+              <Button variant="ghost" size="icon" className="text-muted-foreground">
                 <Menu className="w-5 h-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="bg-zinc-900 border-zinc-800"
-            >
+            <DropdownMenuContent align="end" className="bg-card border-border">
               {loggedInLinks.map((link) => {
                 const Icon = link.icon;
                 const isActive =
@@ -177,7 +144,7 @@ export function Header() {
                       href={link.href}
                       className={cn(
                         "flex items-center gap-2 cursor-pointer",
-                        isActive ? "text-violet-300" : "text-zinc-300",
+                        isActive ? "text-primary" : "",
                       )}
                     >
                       <Icon className="w-4 h-4" />
@@ -192,7 +159,7 @@ export function Header() {
           <UserButton
             appearance={{
               elements: {
-                avatarBox: "w-9 h-9 ring-2 ring-violet-500/20",
+                avatarBox: "w-9 h-9 ring-2 ring-sky-300/60",
               },
             }}
           />
@@ -206,19 +173,19 @@ function Logo() {
   return (
     <>
       <div className="relative">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/25 group-hover:shadow-violet-500/40 transition-shadow">
-          <Code2 className="w-5 h-5 text-white" />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-teal-500 flex items-center justify-center shadow-md shadow-sky-300/40 group-hover:shadow-sky-400/50 transition-shadow">
+          <GraduationCap className="w-5 h-5 text-white" />
         </div>
-        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
+        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center">
           <Play className="w-2 h-2 text-white fill-white" />
         </div>
       </div>
       <div className="flex flex-col">
-        <span className="font-bold text-lg tracking-tight leading-none">
+        <span className="font-bold text-lg tracking-tight leading-none text-foreground">
           SMART
         </span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-          Academy
+        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
+          Academy · Grade 5
         </span>
       </div>
     </>

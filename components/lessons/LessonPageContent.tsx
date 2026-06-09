@@ -4,8 +4,6 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GatedFallback } from "@/components/courses/GatedFallback";
-import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
 import { MuxVideoPlayer } from "./MuxVideoPlayer";
 import { LessonContent } from "./LessonContent";
 import { LessonCompleteButton } from "./LessonCompleteButton";
@@ -20,15 +18,8 @@ interface LessonPageContentProps {
 }
 
 export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
-  const userTier = useUserTier();
-
-  // Find the first course the user has access to (courses are sorted by tier: free, pro, ultra)
-  // This allows users to access lessons if they have access to ANY course containing the lesson
   const courses = (lesson.courses ?? []) as LessonCourse[];
-  const accessibleCourse = courses.find((course) =>
-    hasTierAccess(userTier, course.tier),
-  );
-  const hasAccess = !!accessibleCourse;
+  const activeCourse = courses[0];
 
   const [submission, setSubmission] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -88,9 +79,6 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
     }
   }
 
-  // Use the accessible course for navigation, or fall back to the first course for gated fallback
-  const activeCourse = accessibleCourse ?? courses[0];
-
   // Check if user has completed this lesson
   const isCompleted = userId
     ? (lesson.completedBy?.includes(userId) ?? false)
@@ -145,7 +133,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Sidebar */}
-      {activeCourse && hasAccess && (
+      {activeCourse && (
         <LessonSidebar
           courseSlug={activeCourse.slug!.current!}
           courseTitle={activeCourse.title}
@@ -157,7 +145,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
 
       {/* Main content area */}
       <div className="flex-1 min-w-0">
-        {hasAccess ? (
+        {activeCourse ? (
           <>
             {/* Video Player */}
             {playbackId && (
@@ -171,11 +159,13 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
             {/* Lesson Header */}
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                <h1 className="text-2xl md:text-3xl font-black mb-2 kid-gradient-text">
                   {lesson.title ?? "Untitled Lesson"}
                 </h1>
                 {lesson.description && (
-                  <p className="text-zinc-400">{lesson.description}</p>
+                  <p className="text-muted-foreground font-medium text-base">
+                    {lesson.description}
+                  </p>
                 )}
               </div>
 
@@ -190,31 +180,34 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
 
             {/* Lesson Content */}
             {lesson.content && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8 mb-6">
+              <div className="kid-card bg-gradient-to-br from-pastel-sky/50 via-white/90 to-pastel-mint/30 p-6 md:p-8 mb-6">
                 <div className="flex items-center gap-2 mb-6">
-                  <BookOpen className="w-5 h-5 text-violet-400" />
-                  <h2 className="text-lg font-semibold">Lesson Notes</h2>
+                  <BookOpen className="w-5 h-5 text-sky-600" />
+                  <h2 className="text-lg font-bold text-foreground">Lesson Notes</h2>
                 </div>
                 <LessonContent content={lesson.content} />
               </div>
             )}
 
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8 mb-6 fade-up">
+            <div className="kid-card bg-gradient-to-br from-pastel-yellow/40 via-white/90 to-pastel-mint/25 p-6 md:p-8 mb-6 fade-up">
               <div className="flex items-center gap-2 mb-6">
-                <BookOpen className="w-5 h-5 text-cyan-400" />
-                <h2 className="text-lg font-semibold">Lesson Task</h2>
+                <BookOpen className="w-5 h-5 text-amber-600" />
+                <h2 className="text-lg font-bold text-foreground">Lesson Task</h2>
               </div>
 
               {lesson.taskDescription && lesson.taskDescription.length > 0 ? (
                 <LessonContent content={lesson.taskDescription} />
               ) : (
-                <p className="text-zinc-400 mb-4">
+                <p className="text-foreground/80 font-medium mb-4">
                   No task has been assigned for this lesson yet.
                 </p>
               )}
 
               <form onSubmit={handleSubmitTask} className="space-y-4">
-                <label htmlFor="lesson-task" className="block text-sm font-medium text-zinc-200">
+                <label
+                  htmlFor="lesson-task"
+                  className="block text-sm font-bold text-foreground"
+                >
                   Your Solution
                 </label>
                 <textarea
@@ -222,7 +215,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
                   value={submission}
                   onChange={(event) => setSubmission(event.target.value)}
                   rows={8}
-                  className="w-full rounded-2xl border border-zinc-700 bg-zinc-950/60 p-4 text-sm text-white outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full rounded-2xl border-2 border-sky-200 bg-white p-4 text-base text-foreground placeholder:text-muted-foreground outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-300/40"
                   placeholder="Type your solution or answer here..."
                   disabled={isSubmitting}
                 />
@@ -237,30 +230,27 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
                   </Button>
                 </div>
                 {statusMessage && (
-                  <div className="mt-4 rounded-2xl border px-4 py-3 text-sm transition-all duration-300 sm:text-base"
+                  <div
+                    className={`mt-4 rounded-2xl border-2 px-4 py-3 text-sm font-medium transition-all duration-300 sm:text-base ${
+                      statusType === "success"
+                        ? "border-teal-300 bg-pastel-mint/60 text-teal-900"
+                        : "border-rose-300 bg-rose-50 text-rose-800"
+                    }`}
                     aria-live="polite"
                   >
-                    <p
-                      className={
-                        statusType === "success"
-                          ? "text-emerald-300"
-                          : "text-rose-300"
-                      }
-                    >
-                      {statusMessage}
-                    </p>
+                    <p>{statusMessage}</p>
                   </div>
                 )}
               </form>
             </div>
 
             {/* Navigation between lessons */}
-            <div className="flex items-center justify-between pt-6 border-t border-zinc-800">
+            <div className="flex items-center justify-between pt-6 border-t-2 border-sky-200/80">
               {prevLesson ? (
                 <Link href={`/lessons/${prevLesson.slug}`}>
                   <Button
                     variant="ghost"
-                    className="text-zinc-400 hover:text-white hover:bg-zinc-800"
+                    className="text-muted-foreground hover:text-foreground hover:bg-pastel-sky/50 font-semibold"
                   >
                     <ChevronLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">{prevLesson.title}</span>
@@ -273,7 +263,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
 
               {nextLesson ? (
                 <Link href={`/lessons/${nextLesson.slug}`}>
-                  <Button className="bg-violet-600 hover:bg-violet-500 text-white">
+                  <Button className="bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white font-bold shadow-md shadow-sky-200/50">
                     <span className="hidden sm:inline">{nextLesson.title}</span>
                     <span className="sm:hidden">Next</span>
                     <ChevronRight className="w-4 h-4 ml-2" />
@@ -285,7 +275,9 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
             </div>
           </>
         ) : (
-          <GatedFallback requiredTier={activeCourse?.tier} />
+          <p className="text-muted-foreground text-center py-12">
+            This lesson is not linked to a course yet.
+          </p>
         )}
       </div>
     </div>

@@ -1,23 +1,23 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
+import { AppShell } from "@/components/AppShell";
 import { CourseCard } from "@/components/courses";
 import {
   ArrowRight,
   Play,
   BookOpen,
-  Code2,
+  GraduationCap,
   Rocket,
-  Crown,
   CheckCircle2,
   Star,
-  Users,
-  Trophy,
   Sparkles,
   LayoutDashboard,
+  Calculator,
+  PenLine,
 } from "lucide-react";
 import { sanityFetch } from "@/sanity/lib/live";
-import { FEATURED_COURSES_QUERY, STATS_QUERY } from "@/sanity/lib/queries";
+import { FEATURED_COURSES_QUERY } from "@/sanity/lib/queries";
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
@@ -28,226 +28,138 @@ export default async function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
-      {/* Playful animated gradient mesh background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-violet-600/20 rounded-full blur-[120px] animate-pulse" />
-        <div
-          className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-600/15 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "1s" }}
-        />
-        <div
-          className="absolute top-[40%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] animate-pulse"
-          style={{ animationDelay: "2s" }}
-        />
-      </div>
-
-      {/* Noise texture overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.015]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* LMS Content would go here */}
+    <AppShell>
       <Header />
-       <main className="relative z-10">
+      <main className="relative z-10">
+        {/* Hero */}
         <section className="px-6 lg:px-12 pt-16 pb-24 max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center">
-            {/* Badge */}
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 mb-8 animate-fade-in"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <Sparkles className="w-4 h-4 text-violet-400" />
-              <span className="text-sm text-violet-300">
-                Learn to code with real-world projects
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pastel-sky/90 border-2 border-sky-200 mb-8">
+              <Sparkles className="w-4 h-4 text-sky-700" />
+              <span className="text-sm font-bold text-sky-900">
+                Learning made fun for 5th graders!
               </span>
             </div>
 
-            {/* Headline */}
-            <h1
-              className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95] mb-8 animate-fade-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <span className="block text-white">Master coding</span>
-              <span className="block bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-                the modern way
-              </span>
+            <h1 className="text-5xl md:text-7xl lg:text-[5rem] font-black tracking-tight leading-[0.95] mb-8 text-foreground">
+              <span className="block">Learn math &amp;</span>
+              <span className="block kid-gradient-text">English the fun way</span>
             </h1>
 
-            {/* Subheadline */}
-            <p
-              className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-10 leading-relaxed animate-fade-in"
-              style={{ animationDelay: "0.3s" }}
-            >
-              Join Sonny&apos;s Academy and learn from expertly crafted courses,
-              modules, and hands-on lessons. From free fundamentals to{" "}
-              <span className="text-fuchsia-400">Pro exclusives</span> and{" "}
-              <span className="text-cyan-400">Ultra gems</span>.
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed font-medium">
+              Welcome to Smart Academy! Explore colorful lessons, silly stories,
+              and super-easy math adventures.{" "}
+              <span className="text-sky-800 font-semibold">
+                Everything is free
+              </span>{" "}
+              once you sign in.
             </p>
 
-            {/* CTA Buttons */}
-            <div
-              className="flex flex-col sm:flex-row items-center gap-4 animate-fade-in"
-              style={{ animationDelay: "0.4s" }}
-            >
+            <div className="flex flex-col sm:flex-row items-center gap-4">
               {isSignedIn ? (
                 <>
                   <Link href="/dashboard">
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8 h-12 text-base font-semibold"
+                      className="bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white border-0 shadow-lg shadow-sky-300/50 px-8 h-12 text-base font-bold rounded-xl"
                     >
                       <LayoutDashboard className="w-4 h-4 mr-2" />
-                      Go to Dashboard
+                      Go to My Desk
                     </Button>
                   </Link>
                   <Link href="/dashboard/courses">
                     <Button
                       variant="outline"
                       size="lg"
-                      className="border-zinc-700 bg-white/5 text-white px-8 h-12 text-base hover:bg-white/10 hover:text-white"
+                      className="border-2 border-sky-200 bg-white/80 text-foreground px-8 h-12 text-base font-semibold hover:bg-pastel-sky/50 rounded-xl"
                     >
                       <BookOpen className="w-4 h-4 mr-2" />
-                      My Courses
+                      My Classes
                     </Button>
                   </Link>
                 </>
               ) : (
                 <>
-                  <Link href="/pricing">
+                  <Link href="/dashboard">
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8 h-12 text-base font-semibold"
+                      className="bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white border-0 shadow-lg shadow-sky-300/50 px-8 h-12 text-base font-bold rounded-xl"
                     >
                       <Play className="w-4 h-4 mr-2 fill-white" />
                       Start Learning Free
                     </Button>
                   </Link>
-                  <Link href="/dashboard">
+                  <Link href="#courses">
                     <Button
                       variant="outline"
                       size="lg"
-                      className="border-zinc-700 bg-white/5 text-white px-8 h-12 text-base hover:bg-white/10 hover:text-white"
+                      className="border-2 border-amber-200 bg-pastel-yellow/60 text-foreground px-8 h-12 text-base font-semibold hover:bg-pastel-yellow rounded-xl"
                     >
                       <BookOpen className="w-4 h-4 mr-2" />
-                      Browse Courses
+                      See Our Classes
                     </Button>
                   </Link>
                 </>
               )}
             </div>
-
-            {/* Stats */}
-            {/* <div
-              className="mt-16 grid grid-cols-3 gap-8 md:gap-16 animate-fade-in"
-              style={{ animationDelay: "0.5s" }}
-            >
-              {[
-                {
-                  value: stats?.courseCount ?? 0,
-                  label: "Courses",
-                  icon: BookOpen,
-                },
-                {
-                  value: stats?.lessonCount ?? 0,
-                  label: "Lessons",
-                  icon: Play,
-                },
-                { value: "10K+", label: "Students", icon: Users },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center">
-                  <div className="flex items-center gap-2 mb-1">
-                    <stat.icon className="w-4 h-4 text-violet-400" />
-                    <span className="text-2xl md:text-3xl font-bold text-white">
-                      {stat.value}
-                    </span>
-                  </div>
-                  <span className="text-sm text-zinc-500">{stat.label}</span>
-                </div>
-              ))}
-            </div> */}
           </div>
         </section>
 
-        {/* Tiers Preview */}
-        <section className="px-6 lg:px-12 py-20 max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6">
+        {/* What you'll learn */}
+        <section className="px-6 lg:px-12 py-16 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6">
             {[
               {
-                tier: "Free",
-                icon: Rocket,
-                color: "emerald",
-                gradient: "from-emerald-500 to-teal-600",
-                bgGlow: "bg-emerald-500/10",
-                borderColor: "border-emerald-500/20",
-                description: "Start your journey with foundational courses",
-                features: [
-                  "Core fundamentals",
-                  "Community access",
-                  "Basic projects",
-                ],
-              },
-              {
-                tier: "Pro",
-                icon: Crown,
-                color: "violet",
-                gradient: "from-violet-500 to-fuchsia-600",
-                bgGlow: "bg-violet-500/10",
-                borderColor: "border-violet-500/30",
-                description: "Level up with advanced, production-ready content",
-                features: [
-                  "All Free content",
-                  "Advanced courses",
-                  "Priority support",
-                  "Certificates",
-                ],
-                popular: true,
-              },
-              {
-                tier: "Ultra",
-                icon: Trophy,
-                color: "cyan",
-                gradient: "from-cyan-400 to-blue-600",
-                bgGlow: "bg-cyan-500/10",
-                borderColor: "border-cyan-500/20",
+                title: "Fun Mathematics",
+                icon: Calculator,
+                gradient: "from-sky-400 to-teal-500",
+                bg: "bg-pastel-sky/60",
+                border: "border-sky-200",
                 description:
-                  "Unlock the real gems - AI tutor & exclusive content",
+                  "Ratios, proportions, and yummy word problems — like sharing cookies fairly!",
                 features: [
-                  "Everything in Pro",
-                  "AI Learning Assistant",
-                  "Exclusive content",
-                  "1-on-1 sessions",
+                  "The Cookie Ratio!",
+                  "Sharing chocolates fairly",
+                  "Pizza party math",
                 ],
               },
-            ].map((plan) => (
+              {
+                title: "Creative English",
+                icon: PenLine,
+                gradient: "from-amber-400 to-orange-400",
+                bg: "bg-pastel-yellow/70",
+                border: "border-amber-200",
+                description:
+                  "Write magical poems, read fun stories, and become a storytelling star!",
+                features: [
+                  "Rhyming poems",
+                  "Story starters",
+                  "Reading adventures",
+                ],
+              },
+            ].map((subject) => (
               <div
-                key={plan.tier}
-                className={`relative p-8 rounded-2xl ${plan.bgGlow} border ${plan.borderColor} ${plan.popular ? "ring-2 ring-violet-500/50" : ""} transition-all duration-300 hover:scale-[1.02]`}
+                key={subject.title}
+                className={`relative p-8 rounded-3xl ${subject.bg} border-2 ${subject.border} transition-all duration-300 hover:scale-[1.02] hover:shadow-lg`}
               >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-xs font-semibold">
-                    Most Popular
-                  </div>
-                )}
                 <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-4 shadow-lg`}
+                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${subject.gradient} flex items-center justify-center mb-4 shadow-md`}
                 >
-                  <plan.icon className="w-6 h-6 text-white" />
+                  <subject.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{plan.tier}</h3>
-                <p className="text-zinc-400 text-sm mb-6">{plan.description}</p>
+                <h3 className="text-2xl font-black mb-2 text-foreground">
+                  {subject.title}
+                </h3>
+                <p className="text-muted-foreground text-sm mb-6 font-medium">
+                  {subject.description}
+                </p>
                 <ul className="space-y-3">
-                  {plan.features.map((feature) => (
+                  {subject.features.map((feature) => (
                     <li
                       key={feature}
-                      className="flex items-center gap-2 text-sm text-zinc-300"
+                      className="flex items-center gap-2 text-sm font-semibold text-foreground"
                     >
-                      <CheckCircle2
-                        className={`w-4 h-4 ${plan.color === "emerald" ? "text-emerald-400" : plan.color === "violet" ? "text-violet-400" : "text-cyan-400"}`}
-                      />
+                      <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
                       {feature}
                     </li>
                   ))}
@@ -260,19 +172,17 @@ export default async function Home() {
         {/* Featured Courses */}
         <section id="courses" className="px-6 lg:px-12 py-20 max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Courses built for{" "}
-              <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                real results
-              </span>
+            <h2 className="text-3xl md:text-5xl font-black mb-4 text-foreground">
+              Our{" "}
+              <span className="kid-gradient-text">awesome classes</span>
             </h2>
-            <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-              Each course is packed with modules and lessons designed to take
-              you from zero to job-ready.
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-medium">
+              Short lessons, big smiles. Pick a class and start your next
+              adventure!
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
               <CourseCard
                 key={course.slug!.current!}
@@ -291,9 +201,9 @@ export default async function Home() {
             <Link href="/dashboard">
               <Button
                 variant="outline"
-                className="border-zinc-700 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                className="border-2 border-sky-200 bg-white/80 text-foreground font-semibold hover:bg-pastel-sky/50 rounded-xl"
               >
-                View All Courses
+                View All Classes
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -306,60 +216,59 @@ export default async function Home() {
           className="px-6 lg:px-12 py-20 max-w-7xl mx-auto"
         >
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Students{" "}
-              <span className="bg-gradient-to-r from-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-                love it
-              </span>
+            <h2 className="text-3xl md:text-5xl font-black mb-4 text-foreground">
+              Kids{" "}
+              <span className="kid-gradient-text">love learning here</span>
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                name: "Alex Chen",
-                role: "Junior Developer",
+                name: "Maya, age 10",
+                role: "5th Grader",
                 content:
-                  "Sonny's teaching style is incredible. I went from knowing nothing to landing my first dev job in 6 months!",
-                avatar: "🧑‍💻",
+                  "The cookie ratio lesson was so cool! I finally get how to share snacks fairly with my friends.",
+                avatar: "🍪",
               },
               {
-                name: "Sarah Miller",
-                role: "Freelancer",
+                name: "Jordan, age 11",
+                role: "5th Grader",
                 content:
-                  "The Ultra tier is worth every penny. The exclusive content and 1-on-1 sessions transformed my career.",
-                avatar: "👩‍💼",
+                  "I wrote my first poem about a dragon who loves tacos. Creative English is my favorite class!",
+                avatar: "🐉",
               },
               {
-                name: "James Wilson",
-                role: "CS Student",
+                name: "Sam, age 10",
+                role: "5th Grader",
                 content:
-                  "Best investment I've made. The Pro courses filled gaps my university courses never covered.",
-                avatar: "🎓",
+                  "Math used to feel hard, but the lessons are like games. I want to do one more every day!",
+                avatar: "⭐",
               },
             ].map((testimonial) => (
-              <div
-                key={testimonial.name}
-                className="p-6 rounded-2xl bg-zinc-900/30 border border-zinc-800"
-              >
+              <div key={testimonial.name} className="p-6 rounded-2xl kid-card">
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={`star-${testimonial.name}-${i}`}
-                      className="w-4 h-4 text-amber-400 fill-amber-400"
+                      className="w-4 h-4 text-amber-500 fill-amber-400"
                     />
                   ))}
                 </div>
-                <p className="text-zinc-300 mb-6 leading-relaxed">
+                <p className="text-foreground mb-6 leading-relaxed font-medium">
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-full bg-pastel-mint flex items-center justify-center text-xl border-2 border-teal-200">
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">{testimonial.name}</p>
-                    <p className="text-xs text-zinc-500">{testimonial.role}</p>
+                    <p className="font-bold text-sm text-foreground">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground font-medium">
+                      {testimonial.role}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -367,29 +276,26 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA */}
         <section className="px-6 lg:px-12 py-20 max-w-7xl mx-auto">
-          <div className="relative rounded-3xl bg-gradient-to-br from-violet-600/20 via-fuchsia-600/10 to-cyan-600/20 border border-white/10 p-12 md:p-20 text-center overflow-hidden">
-            {/* Animated gradient border */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-cyan-500/20 blur-xl" />
-
+          <div className="relative rounded-3xl bg-gradient-to-br from-pastel-sky/80 via-pastel-mint/60 to-pastel-yellow/70 border-2 border-sky-200 p-12 md:p-16 text-center overflow-hidden shadow-lg">
             <div className="relative z-10">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/30">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-teal-500 flex items-center justify-center mx-auto mb-6 shadow-md">
                 <Rocket className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                Ready to level up your skills?
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-foreground">
+                Ready for your next adventure?
               </h2>
-              <p className="text-zinc-400 text-lg max-w-xl mx-auto mb-10">
-                Start with free courses or unlock everything with Pro and Ultra.
-                Your coding journey begins now.
+              <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-10 font-medium">
+                Jump into math and English lessons made just for you. Sign in
+                and start learning — it&apos;s all free!
               </p>
-              <Link href="/pricing">
+              <Link href="/dashboard">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-10 h-14 text-lg font-semibold"
+                  className="bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white border-0 shadow-lg shadow-sky-300/50 px-10 h-14 text-lg font-bold rounded-xl"
                 >
-                  View Pricing
+                  Explore Classes
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
@@ -398,31 +304,31 @@ export default async function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="px-6 lg:px-12 py-12 border-t border-zinc-800/50 max-w-7xl mx-auto">
+        <footer className="px-6 lg:px-12 py-12 border-t-2 border-border/60 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center">
-                <Code2 className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-teal-500 flex items-center justify-center">
+                <GraduationCap className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold">Smart Academy</span>
+              <span className="font-bold text-foreground">Smart Academy</span>
             </div>
-            <div className="flex items-center gap-8 text-sm text-zinc-500">
-              <Link href="#" className="hover:text-white transition-colors">
+            <div className="flex items-center gap-8 text-sm text-muted-foreground font-medium">
+              <Link href="#" className="hover:text-primary transition-colors">
                 Privacy
               </Link>
-              <Link href="#" className="hover:text-white transition-colors">
+              <Link href="#" className="hover:text-primary transition-colors">
                 Terms
               </Link>
-              <Link href="#" className="hover:text-white transition-colors">
+              <Link href="#" className="hover:text-primary transition-colors">
                 Contact
               </Link>
             </div>
-            <p className="text-sm text-zinc-600">
-              © 2026 Smart Academy. All rights reserved.
+            <p className="text-sm text-muted-foreground font-medium">
+              © 2026 Smart Academy · Grade 5
             </p>
           </div>
         </footer>
       </main>
-    </div>
+    </AppShell>
   );
 }
